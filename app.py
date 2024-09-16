@@ -51,6 +51,11 @@ def add_user():
 def add():
     return render_template('add_user.html')
 
+@app.route('/list_users')
+def list_users():
+    users = User.query.all()
+    return render_template('list_users.html', users=users)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # This ensures that the database and tables are created
