@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -55,6 +55,29 @@ def add():
 def list_users():
     users = User.query.all()
     return render_template('list_users.html', users=users)
+
+@app.route('/edit_user/<int:id>', methods=['GET', 'POST'])
+def edit_user(id):
+    user = User.query.get_or_404(id)
+    if request.method == 'POST':
+        user.username = request.form['username']
+        user.email = request.form['email']
+        try:
+            db.session.commit()
+            return redirect(url_for('list_users'))
+        except Exception as e:
+            return f"Произошла ошибка: {str(e)}"
+    return render_template('edit_user.html', user=user)
+
+@app.route('/delete_user/<int:id>')
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('list_users'))
+    except Exception as e:
+        return f"Произошла ошибка: {str(e)}"
 
 if __name__ == '__main__':
     with app.app_context():

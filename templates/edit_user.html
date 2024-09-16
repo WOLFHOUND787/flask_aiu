@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Редактировать пользователя</h2>
+<form action="/edit_user/{{ user.id }}" method="POST">
+    <label for="username">Имя пользователя:</label><br>
+    <input type="text" id="username" name="username" value="{{ user.username }}"><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="text" id="email" name="email" value="{{ user.email }}"><br><br>
+
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock %}
