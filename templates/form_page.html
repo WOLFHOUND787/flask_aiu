@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Оставьте ваше сообщение</h2>
+
+<form method="POST" action="/submit">
+    <label for="name">Имя:</label><br>
+    <input type="text" id="name" name="name"><br>
+
+    <label for="message">Сообщение:</label><br>
+    <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
+
+    <button type="submit">Отправить</button>
+</form>
+
+{% endblock %}
