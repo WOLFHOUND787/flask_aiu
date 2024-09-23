@@ -1,3 +1,4 @@
+import bcrypt
 from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -78,6 +79,19 @@ def delete_user(id):
         return redirect(url_for('list_users'))
     except Exception as e:
         return f"Произошла ошибка: {str(e)}"
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        new_user = User(username=username, email=email, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('register.html')
 
 if __name__ == '__main__':
     with app.app_context():
